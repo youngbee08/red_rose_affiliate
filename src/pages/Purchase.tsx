@@ -33,16 +33,7 @@ const PurchasePage: React.FC = () => {
   const [orderId, setOrderId] = useState<string>("");
   const [showUSD, setShowUSD] = useState(true);
 
-  const originalAmount = useMemo(() => unitPrice * qty, [unitPrice, qty]);
-
-  const hasDiscount = qty >= 15;
-
-  const discountedAmount = useMemo(() => {
-    if (!hasDiscount) return originalAmount;
-    return originalAmount * (1 - 0.38);
-  }, [originalAmount, hasDiscount]);
-
-  const amount = hasDiscount ? discountedAmount : originalAmount;
+  const amount = useMemo(() => unitPrice * qty, [unitPrice, qty]);
   const BANK_DETAILS = showUSD
     ? {
         bankName: "ZELLE",
@@ -264,11 +255,6 @@ const PurchasePage: React.FC = () => {
               </div>
             </div>
           </div>
-          {qty <= 14 && (
-            <p className="text-[11px] text-primary/80 mt-2">
-              Buy 15+ items to get 38% discount
-            </p>
-          )}
 
           <div className="mt-6 rounded-2xl border border-primary/40 bg-primary/5 p-3 sm:p-4 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
@@ -337,31 +323,13 @@ const PurchasePage: React.FC = () => {
               <p className="text-sm font-bold text-neutral-soft">
                 Total Amount to Pay
               </p>
-
-              {hasDiscount && (
-                <p className="mt-1 text-xs line-through text-neutral-soft">
-                  {showUSD
-                    ? `$${convertNairaToDollar(originalAmount)}`
-                    : naira(originalAmount)}
-                </p>
-              )}
-
               <p className="mt-1 text-xs text-neutral-soft">
                 {showUSD ? naira(amount) : `$${convertNairaToDollar(amount)}`}
               </p>
-
-              {hasDiscount && (
-                <p className="text-[10px] text-green-600 font-bold mt-1">
-                  38% Discount Applied
-                </p>
-              )}
             </div>
-
-            <div className="text-right">
-              <p className="font-display text-xl font-extrabold text-primary">
-                {showUSD ? `$${convertNairaToDollar(amount)}` : naira(amount)}
-              </p>
-            </div>
+            <p className="font-display text-xl font-extrabold text-primary">
+              {showUSD ? `$${convertNairaToDollar(amount)}` : naira(amount)}
+            </p>
           </div>
           <div className="mt-5">
             <input
