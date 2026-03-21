@@ -129,7 +129,7 @@ const Contact: React.FC = () => {
             <button
               type="submit"
               disabled={!canSend}
-              className={`mt-2 w-full rounded-xl px-5 py-3 text-sm font-bold shadow-md transition ${canSend ? "bg-primary text-white hover:brightness-110" : "bg-primary/60 text-white/90 cursor-not-allowed"}`}
+              className={`mt-2 w-full rounded-3xl px-5 py-3 text-sm font-bold shadow-md transition ${canSend ? "bg-primary text-white hover:brightness-110" : "bg-primary/60 text-white/90 cursor-not-allowed"}`}
             >
               Send message
             </button>

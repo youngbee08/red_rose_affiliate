@@ -105,7 +105,7 @@ const About: React.FC = () => {
               {formulaSupport.map((item, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl border border-secondary-dark/60 p-4 transition hover:border-primary"
+                  className="rounded-3xl border border-secondary-dark/60 p-4 transition hover:border-primary"
                 >
                   <h4 className="text-sm font-semibold text-neutral-dark lg:text-base">
                     {item.title}
