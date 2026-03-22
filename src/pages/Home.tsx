@@ -41,7 +41,7 @@ const Home: React.FC = () => {
     : "nigeria";
 
   const [region, setRegion] = useState<"nigeria" | "usa">(defaultRegion);
-  const [showFlyerModal, setShowFlyerModal] = useState(false);
+  const [showFlyerModal, setShowFlyerModal] = useState(true);
   const [flyerRegion, setFlyerRegion] = useState<"nigeria" | "usa">(
     defaultRegion,
   );
@@ -444,7 +444,8 @@ const Home: React.FC = () => {
                   const basePrice = region === "nigeria" ? 73600 : 65;
                   const promoPrice = region === "nigeria" ? 56000 : 40;
 
-                  const isPromo = pkg.count >= 15;
+                  const isPromo =
+                    region === "nigeria" ? pkg.count >= 3 : pkg.count >= 15;
 
                   const originalTotal = basePrice * pkg.count;
 
@@ -478,7 +479,9 @@ const Home: React.FC = () => {
                         )}
 
                         <span className="text-xl font-bold text-neutral-dark">
-                          {formatPrice(finalTotal)}
+                          {finalTotal === 168000
+                            ? formatPrice(200000)
+                            : formatPrice(finalTotal)}
                         </span>
                       </div>
 
