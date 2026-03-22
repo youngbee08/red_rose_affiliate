@@ -34,6 +34,11 @@ import AttachmentModal from "../components/Modals/AttachementModal";
 const Home: React.FC = () => {
   const [reviewAttachement, setReviewAttachement] = useState("");
   const [visibleIng, setVisibleIng] = useState(3);
+  const defaultRegion = navigator.language.includes("en-US")
+    ? "usa"
+    : "nigeria";
+
+  const [region, setRegion] = useState<"nigeria" | "usa">(defaultRegion);
   const handleViewMore = () => {
     setVisibleIng((prev) => prev + 3);
   };
@@ -351,6 +356,86 @@ const Home: React.FC = () => {
         </section>
 
         <div className="app-container flex flex-col gap-10 lg:gap-14">
+          <section className="flex flex-col gap-6 lg:gap-12">
+            {/* Heading */}
+            <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
+              <h2 className="text-2xl font-semibold text-neutral-dark lg:text-4xl">
+                Choose Your Package
+              </h2>
+              <p className="text-sm leading-7 text-neutral-soft">
+                Select a starting level and begin your journey with a package
+                that fits your goals.
+              </p>
+            </div>
+
+            {/* Region Toggle */}
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => setRegion("nigeria")}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
+                  region === "nigeria"
+                    ? "bg-primary text-white"
+                    : "bg-secondary-dark/10 text-neutral-dark"
+                }`}
+              >
+                Nigeria
+              </button>
+
+              <button
+                onClick={() => setRegion("usa")}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
+                  region === "usa"
+                    ? "bg-primary text-white"
+                    : "bg-secondary-dark/10 text-neutral-dark"
+                }`}
+              >
+                USA
+              </button>
+            </div>
+
+            {/* Pricing Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {(region === "nigeria"
+                ? [
+                    { name: "Associate", count: 1, price: "₦73.6K" },
+                    { name: "Promoter", count: 3, price: "₦200K" },
+                    { name: "Business Builder", count: 15, price: "₦840K" },
+                    { name: "Business Owner", count: 30, price: "₦1.672M" },
+                  ]
+                : [
+                    { name: "Associate", count: 1, price: "$65" },
+                    { name: "Promoter", count: 3, price: "$195" },
+                    { name: "Business Builder", count: 15, price: "$600" },
+                    { name: "Business Owner", count: 30, price: "$1,200" },
+                  ]
+              ).map((pkg, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    sessionStorage.setItem("productCount", String(pkg.count));
+                    navigate("/purchase-product");
+                  }}
+                  className="cursor-pointer group rounded-2xl border border-secondary-dark/70 bg-white p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1"
+                >
+                  <h3 className="text-lg font-semibold text-primary group-hover:underline">
+                    {pkg.name}
+                  </h3>
+
+                  <p className="text-sm text-neutral-soft mt-1">
+                    {pkg.count} {pkg.count === 1 ? "Pack" : "Packs"}
+                  </p>
+
+                  <p className="text-xl font-bold text-neutral-dark mt-3">
+                    {pkg.price}
+                  </p>
+
+                  <div className="mt-4 text-sm text-primary font-semibold flex items-center gap-1">
+                    Get Started →
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
           <section className="flex flex-col gap-6 lg:gap-12">
             <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
               <div className="w-full flex items-center justify-center gap-2">

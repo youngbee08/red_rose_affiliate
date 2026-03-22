@@ -21,6 +21,8 @@ import att3 from "./images/att3.jpeg";
 import att4 from "./images/att4.jpeg";
 import landscape from "./images/landscape.jpg";
 import landscape2 from "./images/landscape2.png";
+import usaFlyer from "./images/usaFlyer.png";
+import nigeriaFlyer from "./images/nigeriaFlyer.png";
 
 const assets = {
   logo1,
@@ -45,6 +47,8 @@ const assets = {
   att3,
   att4,
   landscape,
-  landscape2
+  landscape2,
+  usaFlyer,
+  nigeriaFlyer,
 };
 export default assets;
