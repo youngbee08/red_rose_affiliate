@@ -1,5 +1,6 @@
+import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import assets from "../assets/assets";
 import { FaArrowRight } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
@@ -34,11 +35,16 @@ import AttachmentModal from "../components/Modals/AttachementModal";
 const Home: React.FC = () => {
   const [reviewAttachement, setReviewAttachement] = useState("");
   const [visibleIng, setVisibleIng] = useState(3);
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
   const defaultRegion = navigator.language.includes("en-US")
     ? "usa"
     : "nigeria";
 
   const [region, setRegion] = useState<"nigeria" | "usa">(defaultRegion);
+  const [showFlyerModal, setShowFlyerModal] = useState(false);
+  const [flyerRegion, setFlyerRegion] = useState<"nigeria" | "usa">(
+    defaultRegion,
+  );
   const handleViewMore = () => {
     setVisibleIng((prev) => prev + 3);
   };
@@ -266,6 +272,13 @@ const Home: React.FC = () => {
     },
   ];
 
+  const packages = [
+    { name: "Associate", count: 1 },
+    { name: "Promoter", count: 3 },
+    { name: "Business Builder", count: 15 },
+    { name: "Business Owner", count: 30 },
+  ];
+
   const [index, setIndex] = useState(0);
 
   const visibleCount =
@@ -294,6 +307,25 @@ const Home: React.FC = () => {
       .join("");
 
   const displayCount = isMobile ? visibleIng : ingredients.length;
+
+  const formatPrice = (value: number) => {
+    if (region === "nigeria") {
+      if (value >= 1000000) {
+        return `₦${(value / 1000000).toFixed(2)}M`;
+      }
+      return `₦${(value / 1000).toFixed(1)}K`;
+    }
+    return `$${value}`;
+  };
+
+  useEffect(() => {
+    const hasSeen = sessionStorage.getItem("seenFlyer");
+
+    if (!hasSeen) {
+      setShowFlyerModal(true);
+      sessionStorage.setItem("seenFlyer", "true");
+    }
+  }, []);
 
   return (
     <>
@@ -357,7 +389,6 @@ const Home: React.FC = () => {
 
         <div className="app-container flex flex-col gap-10 lg:gap-14">
           <section className="flex flex-col gap-6 lg:gap-12">
-            {/* Heading */}
             <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
               <h2 className="text-2xl font-semibold text-neutral-dark lg:text-4xl">
                 Choose Your Package
@@ -368,7 +399,6 @@ const Home: React.FC = () => {
               </p>
             </div>
 
-            {/* Region Toggle */}
             <div className="flex justify-center gap-3">
               <button
                 onClick={() => setRegion("nigeria")}
@@ -393,47 +423,84 @@ const Home: React.FC = () => {
               </button>
             </div>
 
-            {/* Pricing Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {(region === "nigeria"
-                ? [
-                    { name: "Associate", count: 1, price: "₦73.6K" },
-                    { name: "Promoter", count: 3, price: "₦200K" },
-                    { name: "Business Builder", count: 15, price: "₦840K" },
-                    { name: "Business Owner", count: 30, price: "₦1.672M" },
-                  ]
-                : [
-                    { name: "Associate", count: 1, price: "$65" },
-                    { name: "Promoter", count: 3, price: "$195" },
-                    { name: "Business Builder", count: 15, price: "$600" },
-                    { name: "Business Owner", count: 30, price: "$1,200" },
-                  ]
-              ).map((pkg, index) => (
-                <div
-                  key={index}
-                  onClick={() => {
-                    sessionStorage.setItem("productCount", String(pkg.count));
-                    navigate("/purchase-product");
-                  }}
-                  className="cursor-pointer group rounded-2xl border border-secondary-dark/70 bg-white p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1"
-                >
-                  <h3 className="text-lg font-semibold text-primary group-hover:underline">
-                    {pkg.name}
-                  </h3>
+            <div className="relative w-full">
+              <button
+                onClick={() => {
+                  scrollRef.current?.scrollBy({
+                    left: -300,
+                    behavior: "smooth",
+                  });
+                }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white border border-primary text-primary shadow flex items-center justify-center hover:bg-primary hover:text-white transition"
+              >
+                <HiChevronLeft />
+              </button>
 
-                  <p className="text-sm text-neutral-soft mt-1">
-                    {pkg.count} {pkg.count === 1 ? "Pack" : "Packs"}
-                  </p>
+              <div
+                ref={scrollRef}
+                className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-10 py-4 scrollbar-thin"
+              >
+                {packages.map((pkg, index) => {
+                  const basePrice = region === "nigeria" ? 73600 : 65;
+                  const promoPrice = region === "nigeria" ? 56000 : 40;
 
-                  <p className="text-xl font-bold text-neutral-dark mt-3">
-                    {pkg.price}
-                  </p>
+                  const isPromo = pkg.count >= 15;
 
-                  <div className="mt-4 text-sm text-primary font-semibold flex items-center gap-1">
-                    Get Started →
-                  </div>
-                </div>
-              ))}
+                  const originalTotal = basePrice * pkg.count;
+
+                  const finalTotal = isPromo
+                    ? promoPrice * pkg.count
+                    : originalTotal;
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        sessionStorage.setItem(
+                          "productCount",
+                          String(pkg.count),
+                        );
+                        navigate("/purchase-product");
+                      }}
+                      className="min-w-62.5 cursor-pointer group rounded-2xl border border-secondary-dark/70 bg-white p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1"
+                    >
+                      <h3 className="text-lg font-semibold text-primary group-hover:underline">
+                        {pkg.name}
+                      </h3>
+
+                      <p className="text-sm text-neutral-soft mt-1">
+                        {pkg.count} {pkg.count === 1 ? "Pack" : "Packs"}
+                      </p>
+                      <div className="mt-3 flex flex-col gap-1">
+                        {isPromo && (
+                          <span className="text-sm text-neutral-soft line-through">
+                            {formatPrice(originalTotal)}
+                          </span>
+                        )}
+
+                        <span className="text-xl font-bold text-neutral-dark">
+                          {formatPrice(finalTotal)}
+                        </span>
+                      </div>
+
+                      <div className="mt-4 text-sm text-primary font-semibold">
+                        Get Started
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => {
+                  scrollRef.current?.scrollBy({
+                    left: 300,
+                    behavior: "smooth",
+                  });
+                }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white border border-primary text-primary shadow flex items-center justify-center hover:bg-primary hover:text-white transition"
+              >
+                <HiChevronRight />
+              </button>
             </div>
           </section>
           <section className="flex flex-col gap-6 lg:gap-12">
@@ -688,6 +755,80 @@ const Home: React.FC = () => {
         onClose={() => setReviewAttachement("")}
         allowDownload
       />
+      <AnimatePresence>
+        {showFlyerModal && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 relative max-h-[90vh] overflow-y-auto styled-scrollbar"
+            >
+              <button
+                onClick={() => setShowFlyerModal(false)}
+                className="absolute top-3 right-3 text-sm font-bold text-neutral-soft hover:text-primary"
+              >
+                <IoClose />
+              </button>
+
+              <h3 className="text-lg font-semibold text-center mb-4">
+                Check Out Our Current Packages & Offers
+              </h3>
+
+              <div className="flex justify-center gap-2 mb-4">
+                <button
+                  onClick={() => setFlyerRegion("nigeria")}
+                  className={`px-4 py-1 rounded-full text-sm ${
+                    flyerRegion === "nigeria"
+                      ? "bg-primary text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  Nigeria
+                </button>
+
+                <button
+                  onClick={() => setFlyerRegion("usa")}
+                  className={`px-4 py-1 rounded-full text-sm ${
+                    flyerRegion === "usa"
+                      ? "bg-primary text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  USA
+                </button>
+              </div>
+
+              <div className="rounded-xl overflow-hidden border">
+                <img
+                  src={
+                    flyerRegion === "nigeria"
+                      ? assets.nigeriaFlyer
+                      : assets.usaFlyer
+                  }
+                  alt="Flyer"
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowFlyerModal(false);
+                  navigate("/purchase-product");
+                }}
+                className="mt-4 w-full rounded-full bg-primary text-white py-3 text-sm font-semibold"
+              >
+                Get Started
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
