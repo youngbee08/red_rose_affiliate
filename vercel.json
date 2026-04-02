@@ -2,8 +2,8 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "doubleredrose-olaw.info" }],
-      "destination": "https://www.doubleredrose-olaw.info/$1",
+      "has": [{ "type": "host", "value": "doubleredrose-Richfieldfield.info" }],
+      "destination": "https://www.doubleredrose-Richfieldfieldfield.info/$1",
       "permanent": true
     }
   ],

@@ -157,14 +157,14 @@ const Affiliate: React.FC = () => {
               title="Left Leg"
               description="Position yourself in the primary spillover leg for maximum team momentum."
               cta="Join Left Leg"
-              href="https://www.affluenceglobaldream.com/en/olawolu66/us/agl/ref-member/LEFT"
+              href="https://www.affluenceglobaldream.com/en/Richfieldfieldolu66/us/agl/ref-member/LEFT"
             />
 
             <LegCard
               title="Right Leg"
               description="Ideal for balanced team building and effectively maximizing personal bonus overrides."
               cta="Join Right Leg"
-              href="https://www.affluenceglobaldream.com/en/olawolu66/us/agl/ref-member/RIGHT"
+              href="https://www.affluenceglobaldream.com/en/Richfieldolu66/us/agl/ref-member/RIGHT"
             />
 
             <LegCard

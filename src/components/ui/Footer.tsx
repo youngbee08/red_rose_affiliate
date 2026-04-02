@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="app-container py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="flex flex-col gap-2">
             <p className="text-xs font-semibold text-neutral-soft">
-              © {year} RedRose by Olaw. All rights reserved.
+              © {year} RedRose by Richfield. All rights reserved.
             </p>
 
             <div className="flex items-center gap-3">

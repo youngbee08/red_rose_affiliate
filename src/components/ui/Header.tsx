@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {  HiX } from "react-icons/hi";
+import { HiX } from "react-icons/hi";
 import { AnimatePresence, motion } from "framer-motion";
 import navitems from "../../lib/navitems";
 import { BiMenu } from "react-icons/bi";
@@ -32,7 +32,7 @@ const Header = () => {
           <div className="flex items-center gap-3 lg:gap-4">
             <Link to="/" className="flex flex-col leading-tight">
               <span className="font-display text-sm font-bold text-tetiary lg:text-lg">
-                RedRose by Olaw
+                RedRose by Richfield
               </span>
               <span className="text-xs text-neutral-soft">
                 Affiliate business owner of Affluence Global
@@ -109,7 +109,7 @@ const Header = () => {
               <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-dark/60">
                 <div className="flex flex-col leading-tight">
                   <span className="font-display text-lg font-bold text-tetiary">
-                    RedRose by Olaw
+                    RedRose by Richfield
                   </span>
                   <span className="text-xs text-neutral-soft">
                     Affiliate business owner of Affluence Global
