@@ -1,4 +1,4 @@
-# Red Rose by Richfieldfieldfieldfield: Premium Wellness & Affiliate Platform
+# Red Rose by Richfield: Premium Wellness & Affiliate Platform
 
 This project powers the official online presence for "Red Rose by Richfieldfieldfieldfield," a premium wellness product, offering detailed information about its benefits, ingredients, and a straightforward purchasing process. It also serves as a comprehensive platform for individuals interested in joining the Red Rose affiliate network, outlining the opportunity, compensation structure, and enrollment paths.
 
