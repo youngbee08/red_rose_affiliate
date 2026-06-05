@@ -9,7 +9,7 @@ import {
   getAltPrice,
 } from "../utilities/formatterUtility";
 
-const WHATSAPP_NUMBER = "13175313547";
+const WHATSAPP_NUMBER = "13172584423";
 
 const naira = (n: number) =>
   new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN" }).format(
